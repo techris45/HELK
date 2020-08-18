@@ -3,7 +3,7 @@
 # Author: Roberto Rodriguez (@Cyb3rWard0g)
 # License: GPL-3.0
 
-FROM cyb3rward0g/helk-kafka-base:2.2.0
+FROM otrf/helk-kafka-base:2.4.0
 LABEL maintainer="Roberto Rodriguez @Cyb3rWard0g"
 LABEL description="Dockerfile base for the HELK Kafka Broker."
 
@@ -21,6 +21,6 @@ RUN chmod +x ${KAFKA_HOME}/scripts/kafka-entrypoint.sh \
 
 USER ${KAFKA_USER}
 
-WORKDIR "/opt/helk/kafka/scripts/"
+WORKDIR /opt/helk/kafka/scripts/
 ENTRYPOINT ["./kafka-entrypoint.sh"]
 CMD ["/bin/bash","-c","$KAFKA_SCRIPT $KAFKA_CONFIG"]

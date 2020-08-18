@@ -7,7 +7,7 @@
 # https://github.com/Yelp/elastalert/blob/master/Dockerfile-test
 # https://jordanpotti.com/2017/12/22/using-elastalert-to-help-automate-threat-hunting/
 
-FROM cyb3rward0g/helk-base:0.0.3
+FROM otrf/helk-base:0.0.4
 LABEL maintainer="Roberto Rodriguez @Cyb3rWard0g"
 LABEL description="Dockerfile base for the HELK Elastalert."
 
@@ -22,10 +22,7 @@ ENV ESALERT_SIGMA_HOME=/opt/sigma
 RUN apt-get update -qq && apt-get install -qqy --no-install-recommends \
   libmagic-dev \
   build-essential \
-  python-setuptools \
-  python2.7 \
-  python2.7-dev \
-  python-pip \
+  python3-setuptools \
   git \
   python3-pip \
   python3-dev \
@@ -39,14 +36,15 @@ RUN apt-get update -qq && apt-get install -qqy --no-install-recommends \
   && git clone https://github.com/Yelp/elastalert.git ${ESALERT_HOME} \
   && bash -c 'mkdir -pv /etc/elastalert/rules' \
   && cd ${ESALERT_HOME} \
-  && python -m pip install --upgrade pip \
-  && pip install urllib3==1.24.3 \
-  && pip install -r requirements.txt \
-  && python setup.py install \
-  # ********* Download SIGMA *******************
-  && git clone https://github.com/Cyb3rWard0g/sigma.git ${ESALERT_SIGMA_HOME} \
   && sudo pip3 install --upgrade pip \
-  && pip3 install -r ${ESALERT_SIGMA_HOME}/tools/requirements.txt
+  && sudo pip3 install --upgrade setuptools \
+  && pip3 install urllib3 \
+  && pip3 install -U enum34 \
+  && pip3 install -r requirements.txt \
+  && python3 setup.py install \
+  # ********* Download SIGMA *******************
+  && pip3 install -U sigmatools \
+  && git clone https://github.com/Cyb3rWard0g/sigma.git ${ESALERT_SIGMA_HOME}
 
 # ********* Copy Elastalert files **************
 COPY scripts/* ${ESALERT_HOME}/
